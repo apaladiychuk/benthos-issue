@@ -1,0 +1,27 @@
+
+tracer:
+  jaeger:
+    agent_address: jaeger:6831
+    #    collector_url: http://jaeger:14268/api/traces
+    sampler_type: const
+    sampler_param: 1
+    flush_interval: "" # No default (optional)
+
+pipeline:
+  processors:
+      - custom: {}
+      - mapping: |
+          root.new_id = this.id
+      # Metering and clean up the data
+
+output:
+  label: ""
+  http_client:
+    url: "http://localhost:8080/output" # No default (required)
+    verb: POST
+    headers: {}
+    metadata:
+      include_prefixes: []
+      include_patterns: []
+    dump_request_log_level: ""
+
